@@ -23,7 +23,7 @@ const Navbar = () => {
     e.preventDefault();
     try {
       const { data } = await axios.get(
-        "http://localhost:4000/api/v1/user/logout",
+        "https://nasa-open-api-with-blog.vercel.app/api/v1/user/logout",
         { withCredentials: true }
       );
       setIsAuthenticated(false);
