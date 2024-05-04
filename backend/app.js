@@ -13,7 +13,7 @@ dotenv.config({ path: "./.env" });
 
 app.use(
   cors({
-    origin: [process.env.FRONTEND_URL],
+    origin: 'https://nasa-open-api-with-blog-frontend.vercel.app/',
     methods: ["GET", "PUT", "DELETE", "POST"],
     credentials: true,
   })
