@@ -9,7 +9,7 @@ import blogRouter from "./routes/blogRouter.js";
 import fileUpload from "express-fileupload";
 
 const app = express();
-dotenv.config({ path: "./config/config.env" });
+dotenv.config({ path: "./.env" });
 
 app.use(
   cors({
