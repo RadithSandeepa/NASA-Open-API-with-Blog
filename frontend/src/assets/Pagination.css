@@ -1,0 +1,35 @@
+.pagination {
+    display: flex; /* Horizontal layout */
+    justify-content: center; /* Center the pagination */
+    gap: 8px; /* Space between pagination items */
+    padding: 10px; /* Padding around the pagination */
+    list-style: none; /* No bullet points */
+  }
+  
+  .page-item {
+    padding: 5px; /* Space around each page item */
+  }
+  
+  .page-link {
+    background-color: #f0f0f0; /* Light gray background */
+    border: 1px solid #ccc; /* Light border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 8px 12px; /* Padding inside the button */
+    color: #333; /* Dark text color */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s; /* Smooth transition for hover effects */
+  }
+  
+  .page-link:hover {
+    background-color: #ddd; /* Darkens on hover */
+  }
+  
+  .page-link:active {
+    background-color: #bbb; /* Darker on click */
+  }
+  
+  .page-link.active {
+    background-color: #333; /* Indicates active page */
+    color: #fff; /* White text for active page */
+  }
+  

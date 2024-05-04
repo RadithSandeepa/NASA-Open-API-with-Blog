@@ -1,0 +1,95 @@
+.neo-feed {
+  left: 100px;
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  position: relative;
+  right: 100px
+}
+
+.light-mode {
+  background: url('../../assets/img/galaxy-night-view.jpg') fixed;
+  color: #fff;
+}
+
+.dark-mode {
+  background-color: #181a2a;
+  color: #ccc;
+}
+
+/* CSS for text color in light mode */
+.text-dark {
+  color: #000; /* Black text for light mode */
+}
+
+/* CSS for text color in dark mode */
+.text-light {
+  color: #fff; /* White text for dark mode */
+}
+
+
+.asteroid-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.asteroid-card {
+  background: url('./space.png') ;
+  position: relative; /* Ensures the absolute positioned SVG is relative to this card */
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 20px;
+  transition: all 0.3s ease-in-out;
+  overflow: hidden; /* To prevent SVG from overflowing */
+}
+
+.asteroid-card:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transform: translateY(-5px);
+}
+
+.asteroid-name {
+  font-size: 1.5em;
+  margin-top: 0;
+}
+
+.asteroid-info {
+  margin-bottom: 10px;
+}
+
+.asteroid-description {
+  color: #666;
+}
+
+/* The SVG animation class */
+.asteroid-card:hover .svg-asteroid {
+  animation: move-asteroid 0.9s linear; /* Animation to move the SVG across the card */
+}
+
+.svg-asteroid {
+  position: absolute;
+  top: -40px; /* Start just above the card */
+  right: -40px; /* Start just off the right edge of the card */
+  width: 50px; /* SVG size */
+  height: 50px;
+  opacity: 1; /* Slight transparency */
+  pointer-events: none; /* Ensure it doesn't interfere with interaction */
+}
+
+@keyframes move-asteroid {
+  0% {
+    transform: translate(0, 0) scale(1); /* Start at top-right with original size */
+    opacity: 0.9; /* Start with high opacity */
+  }
+  50% {
+    transform: translate(-100%, 100%) scale(1.5); /* Midway, increasing size and transitioning */
+    opacity: 1; /* Maximum visibility at the midpoint */
+  }
+  100% {
+    transform: translate(-200%, 200%) scale(2); /* End at bottom-left with larger size */
+    opacity: 0; /* Gradually fade out */
+  }
+}
+
+
