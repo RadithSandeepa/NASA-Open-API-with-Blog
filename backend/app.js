@@ -11,13 +11,15 @@ import fileUpload from "express-fileupload";
 const app = express();
 dotenv.config({ path: "./.env" });
 
-app.use(
-  cors({
-    origin: 'https://nasa-open-api-with-blog-frontend.vercel.app',
-    methods: ["GET", "PUT", "DELETE", "POST"],
-    credentials: true,
-  })
-);
+// app.use(
+//   cors({
+//     origin: 'https://nasa-open-api-with-blog-frontend.vercel.app',
+//     // methods: ["GET", "PUT", "DELETE", "POST"],
+//     credentials: true
+//   })
+// );
+
+app.use(cors()); 
 
 app.use(cookieParser());
 app.use(express.json());
