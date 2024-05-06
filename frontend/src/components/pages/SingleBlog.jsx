@@ -11,7 +11,7 @@ const SingleBlog = () => {
     const getSingleBlog = async () => {
       try {
         const { data } = await axios.get(
-          `https://nasa-open-api-with-blog.vercel.app/api/v1/blog/singleblog/${id}`,
+          `http://localhost:4000/api/v1/blog/singleblog/${id}`,
           { withCredentials: true }
         );
         setBlog(data.blog);
