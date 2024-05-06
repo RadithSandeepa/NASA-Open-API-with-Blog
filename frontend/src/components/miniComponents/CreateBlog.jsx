@@ -97,7 +97,7 @@ const CreateBlog = () => {
 
     try {
       const { data } = await axios.post(
-        "http://localhost:4000/api/v1/blog/post",
+        "https://nasa-open-api-with-blog.vercel.app/api/v1/blog/post",
         formData,
         {
           withCredentials: true,

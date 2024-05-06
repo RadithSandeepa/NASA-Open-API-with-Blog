@@ -24,7 +24,7 @@ const Register = () => {
 
     try {
       const { data } = await axios.post(
-        "http://localhost:4000/api/v1/user/register",
+        "https://nasa-open-api-with-blog.vercel.app/api/v1/user/register",
         formData,
       );
       setName("");

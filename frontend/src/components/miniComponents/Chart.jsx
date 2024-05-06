@@ -29,7 +29,7 @@ const Chart = () => {
   useEffect(() => {
     const fetchMyBlogs = async () => {
       const { data } = await axios.get(
-        "http://localhost:4000/api/v1/blog/myblogs",
+        "https://nasa-open-api-with-blog.vercel.app/api/v1/blog/myblogs",
         { withCredentials: true }
       );
       setMyBlogs(data.blogs);
