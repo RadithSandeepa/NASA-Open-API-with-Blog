@@ -16,7 +16,7 @@ const Navbar = () => {
   
   const isDashboard = useLocation("http://localhost:5173/dashboard");
   
-  const { mode, setMode, isAuthenticated, user, setIsAuthenticated, role } = useContext(Context);
+  const { mode, setMode, isAuthenticated, user, setIsAuthenticated, setUser, role } = useContext(Context);
   
   const navigateTo = useNavigate();
   const handleLogout = async (e) => {
@@ -27,6 +27,7 @@ const Navbar = () => {
         { withCredentials: true }
       );
       setIsAuthenticated(false);
+      setUser({});
       toast.success(data.message);
       navigateTo("/");
     } catch (error) {
