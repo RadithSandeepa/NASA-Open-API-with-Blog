@@ -8,30 +8,30 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("");
-  const { mode, isAuthenticated } = useContext(Context);
+  const { mode, isAuthenticated, setIsAuthenticated, setUser } = useContext(Context);
   const navigateTo = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    await axios
-      .post(
-        "https://nasa-open-api-with-blog.vercel.app/api/v1/user/login",
+    try {
+      const { data } = await axios.post(
+        "http://localhost:4000/api/v1/user/login",
         { email, password, role },
         {
           withCredentials: true,
           headers: { "Content-Type": "application/json" },
         }
-      )
-      .then((res) => {
-        toast.success(res.data.message);
-        setEmail("");
-        setPassword("");
-        setRole("");
-        navigateTo("/");
-      })
-      .catch((error) => {
-        toast.error(error.response.data.message);
-      });
+      );
+      toast.success(data.message);
+      setUser(data.user);
+      setIsAuthenticated(true);
+      setEmail("");
+      setPassword("");
+      setRole("");
+      navigateTo("/home");
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
   };
 
   if(isAuthenticated){
