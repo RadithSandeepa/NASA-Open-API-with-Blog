@@ -10,11 +10,17 @@ lerna-debug.log*
 .history/
 /.history/
 
+# Dependencies
 /frontend/node_modules
 /backend/node_modules
 dist
 dist-ssr
 *.local
+
+# Environment files (ignore all .env files except .env.example)
+.env
+.env.*
+!.env.example
 
 # Editor directories and files
 .vscode/*
@@ -26,5 +32,3 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-
-/frontend/
