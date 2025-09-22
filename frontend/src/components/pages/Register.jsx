@@ -10,7 +10,7 @@ const Register = () => {
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
 
-  const { mode, isAuthenticated } = useContext(Context);
+  const { mode, isAuthenticated, setIsAuthenticated, setUser } = useContext(Context);
 
   const navigateTo = useNavigate();
 
@@ -24,15 +24,20 @@ const Register = () => {
 
     try {
       const { data } = await axios.post(
-        "https://nasa-open-api-with-blog.vercel.app/api/v1/user/register",
+        "http://localhost:4000/api/v1/user/register",
         formData,
+        {
+          withCredentials: true,
+        }
       );
       setName("");
       setEmail("");
       setPassword("");
       setPhone("");
+      setUser(data.user);
+      setIsAuthenticated(true);
       toast.success(data.message);
-      navigateTo("/");
+      navigateTo("/home");
     } catch (error) {
       toast.error(error.response.data.message);
     }
