@@ -25,7 +25,7 @@ const App = () => {
     const fetchUser = async () => {
       try {
         const { data } = await axios.get(
-          "https://nasa-open-api-with-blog.vercel.app/api/v1/user/myprofile",
+          "http://localhost:4000/api/v1/user/myprofile",
           {
             withCredentials: true,
           }
@@ -41,7 +41,7 @@ const App = () => {
     const fetchBlogs = async () => {
       try {
         const { data } = await axios.get(
-          "https://nasa-open-api-with-blog.vercel.app/api/v1/blog/all",
+          "http://localhost:4000/api/v1/blog/all",
           { withCredentials: true }
         );
         setBlogs(data.allBlogs);
@@ -51,7 +51,7 @@ const App = () => {
     };
     fetchUser();
     fetchBlogs();
-  }, [isAuthenticated, user]);
+  }, []); // Remove dependencies to prevent infinite loop
   return (
     <>
       <BrowserRouter>
