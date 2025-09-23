@@ -15,7 +15,7 @@ export const register = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHandler("User already exists", 400));
   }
 
-  const role = "Reader";
+  const role = "Author";
   user = await User.create({
     name,
     email: normalizedEmail,

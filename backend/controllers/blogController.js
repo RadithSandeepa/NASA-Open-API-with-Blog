@@ -259,6 +259,13 @@ export const getSingleBlog = catchAsyncErrors(async (req, res, next) => {
   if (!blog) {
     return next(new ErrorHandler("Blog not found!", 404));
   }
+
+  // Only allow access if published OR current user is the creator
+  const isOwner = blog.createdBy.toString() === req.user._id.toString();
+  if (!blog.published && !isOwner) {
+    return next(new ErrorHandler("Not authorized to view this draft blog", 403));
+  }
+  
   res.status(200).json({
     success: true,
     blog,
