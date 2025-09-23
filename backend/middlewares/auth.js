@@ -1,5 +1,6 @@
 import { catchAsyncErrors } from "../middlewares/catchAsyncErrors.js";
 import { User } from "../models/userSchema.js";
+import { Blog } from "../models/blogSchema.js";
 import ErrorHandler from "../middlewares/error.js";
 import jwt from "jsonwebtoken";
 
@@ -29,3 +30,18 @@ export const isAuthorized = (...roles) => {
     next();
   };
 };
+
+export const isBlogOwner = catchAsyncErrors(async (req, res, next) => {
+  const blog = await Blog.findById(req.params.id);
+  if (!blog) {
+    return next(new ErrorHandler("Blog not found", 404));
+  }
+
+  // Allow if user is owner OR admin
+  if (blog.createdBy.toString() !== req.user._id.toString() &&  req.user.role !== "Admin") {
+    return next(new ErrorHandler("Not authorized to modify this blog", 403));
+  }
+
+  req.blog = blog; // attach blog to request so controller can use it
+  next();
+});

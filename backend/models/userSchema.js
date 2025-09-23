@@ -1,3 +1,7 @@
+/*
+ *   Copyright (c) 2025 
+ *   All rights reserved.
+ */
 import mongoose from "mongoose";
 import validator from "validator";
 import bcrypt from "bcrypt";
@@ -49,7 +53,6 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
     enum: ["Reader", "Author"],
-    default: "Author",
   },
   password: {
     type: String,
