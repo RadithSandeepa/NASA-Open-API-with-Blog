@@ -16,16 +16,18 @@ import { Context } from "./main";
 import axios from "axios";
 import UpdateBlog from "./components/pages/UpdateBlog";
 import Asteroid from "./components/pages/Asteroid";
-
+import OAuthCallback from "./components/pages/OAuthCallback";
+import { API_BASE_URL } from "./utils/constants";
 
 const App = () => {
   const { setUser, isAuthenticated, setIsAuthenticated, user, setBlogs } =
     useContext(Context);
+
   useEffect(() => {
     const fetchUser = async () => {
       try {
         const { data } = await axios.get(
-          "https://nasa-open-api-with-blog.vercel.app/api/v1/user/myprofile",
+          `${API_BASE_URL}/api/v1/user/myprofile`,
           {
             withCredentials: true,
           }
@@ -33,7 +35,6 @@ const App = () => {
         setUser(data.user);
         setIsAuthenticated(true);
       } catch (error) {
-        console.log(error);
         setIsAuthenticated(false);
         setUser({});
       }
@@ -41,7 +42,7 @@ const App = () => {
     const fetchBlogs = async () => {
       try {
         const { data } = await axios.get(
-          "https://nasa-open-api-with-blog.vercel.app/api/v1/blog/all",
+          `${API_BASE_URL}/api/v1/blog/all`,
           { withCredentials: true }
         );
         setBlogs(data.allBlogs);
@@ -49,16 +50,17 @@ const App = () => {
         setBlogs([]);
       }
     };
+
     fetchUser();
     fetchBlogs();
-  }, [isAuthenticated, user]);
+  }, [setUser, setIsAuthenticated, setBlogs, isAuthenticated, user]);
+
   return (
     <>
       <BrowserRouter>
         <Navbar />
         <Routes>
-          {/* <Route path="/" element={<Home />} /> */}
-          <Route path="/" element={<Login />}/>
+          <Route path="/" element={<Login />} />
           <Route path="/home" element={<Home />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
@@ -68,7 +70,8 @@ const App = () => {
           <Route path="/authors" element={<AllAuthors />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/blog/update/:id" element={<UpdateBlog />} />
-          <Route path="/asteroids" element={<Asteroid />}/>
+          <Route path="/asteroids" element={<Asteroid />} />
+          <Route path="/auth/callback" element={<OAuthCallback />} />
         </Routes>
         <Footer />
         <Toaster />

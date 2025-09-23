@@ -1,12 +1,24 @@
-export const sendToken = (user, statusCode, message, res) => {
-  const token = user.getJWTToken();
-  const options = {
-    expires: new Date(
-      Date.now() + process.env.COOKIE_EXPIRE * 24 * 60 * 60 * 1000
-    ),
+const buildCookieOptions = () => {
+  const isProd = process.env.NODE_ENV === "production";
+  const days = Number(process.env.COOKIE_EXPIRE || 3);
+  return {
+    expires: new Date(Date.now() + days * 24 * 60 * 60 * 1000),
     httpOnly: true,
+    sameSite: isProd ? "None" : "Lax",
+    secure: isProd,
   };
-  res.status(statusCode).cookie("token", token, options).json({
+};
+
+export const attachTokenCookie = (user, res) => {
+  const token = user.getJWTToken();
+  const options = buildCookieOptions();
+  res.cookie("token", token, options);
+  return token;
+};
+
+export const sendToken = (user, statusCode, message, res) => {
+  const token = attachTokenCookie(user, res);
+  res.status(statusCode).json({
     success: true,
     user,
     message,

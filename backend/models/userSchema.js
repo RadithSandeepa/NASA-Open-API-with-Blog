@@ -3,6 +3,20 @@ import validator from "validator";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
+const providerSchema = new mongoose.Schema(
+  {
+    provider: {
+      type: String,
+      required: true,
+    },
+    providerId: {
+      type: String,
+      required: true,
+    },
+  },
+  { _id: false }
+);
+
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -12,38 +26,43 @@ const userSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    required: true,
-    validate: [validator.isEmail, "Please provide a valid email!"],
+    lowercase: true,
+    trim: true,
+    unique: true,
+    sparse: true,
+    validate: {
+      validator: (value) => !value || validator.isEmail(value),
+      message: "Please provide a valid email!",
+    },
+    required: function () {
+      return !this.providers?.length;
+    },
   },
   phone: {
-    type: Number,
-    required: true,
+    type: String,
+    default: null,
+    required: function () {
+      return !this.providers?.length;
+    },
   },
-  // avatar: {
-  //   public_id: {
-  //     type: String,
-  //     required: true
-  //   },
-  //   url: {
-  //     type: String,
-  //     required: true
-  //   },
-  // },
-  // education: {
-  //   type: String,
-  //   required: true,
-  // },
   role: {
     type: String,
     required: true,
     enum: ["Reader", "Author"],
+    default: "Author",
   },
   password: {
     type: String,
-    required: true,
     minLength: [8, "Password must contain at least 8 character!"],
     maxLength: [32, "Password cannot exceed 32 character!"],
     select: false,
+    required: function () {
+      return !this.providers?.length;
+    },
+  },
+  providers: {
+    type: [providerSchema],
+    default: [],
   },
   createdOn: {
     type: Date,
@@ -51,15 +70,19 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-userSchema.pre("save", async function () {
-  if (!this.isModified("password")) {
-    next();
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password") || !this.password) {
+    return next();
   }
   this.password = await bcrypt.hash(this.password, 10);
+  next();
 });
 
 userSchema.methods.comparePassword = async function (enteredPassword) {
-  return await bcrypt.compare(enteredPassword, this.password);
+  if (!this.password) {
+    return false;
+  }
+  return bcrypt.compare(enteredPassword, this.password);
 };
 
 userSchema.methods.getJWTToken = function () {
