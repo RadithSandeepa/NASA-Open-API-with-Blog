@@ -16,7 +16,7 @@ const Navbar = () => {
 
   const location = useLocation();
 
-  const { mode, setMode, isAuthenticated, role, setIsAuthenticated } =
+  const { mode, setMode, isAuthenticated, role, setUser, setIsAuthenticated } =
     useContext(Context);
 
   const navigateTo = useNavigate();
@@ -28,10 +28,11 @@ const Navbar = () => {
         { withCredentials: true }
       );
       setIsAuthenticated(false);
-      setUser({});
+      setUser(null);
       toast.success(data.message);
       navigateTo("/login");
     } catch (error) {
+      console.error(error);
       const message = error?.response?.data?.message || "Failed to logout.";
       toast.error(message);
     }
