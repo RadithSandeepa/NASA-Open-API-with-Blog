@@ -2,6 +2,7 @@ import { catchAsyncErrors } from "../middlewares/catchAsyncErrors.js";
 import ErrorHandler from "../middlewares/error.js";
 import { Blog } from "../models/blogSchema.js";
 import cloudinary from "cloudinary";
+import sanitizeHtml from "sanitize-html";
 
 // export const blogPost = catchAsyncErrors(async (req, res, next) => {
 //   if (!req.files || Object.keys(req.files).length === 0) {
@@ -189,9 +190,15 @@ export const blogPost = catchAsyncErrors(async (req, res, next) => {
   }
 
   const blogData = {
-    title,
-    intro,
-    category,
+    title: sanitizeHtml(title, { allowedTags: [], allowedAttributes: {} }),
+    intro: sanitizeHtml(intro, { allowedTags: [], allowedAttributes: {} }),
+    category: sanitizeHtml(category, { allowedTags: [], allowedAttributes: {} }),
+    paraOneTitle: sanitizeHtml(paraOneTitle || "", { allowedTags: [], allowedAttributes: {} }),
+    paraOneDescription: sanitizeHtml(paraOneDescription || "", { allowedTags: [], allowedAttributes: {} }),
+    paraTwoTitle: sanitizeHtml(paraTwoTitle || "", { allowedTags: [], allowedAttributes: {} }),
+    paraTwoDescription: sanitizeHtml(paraTwoDescription || "", { allowedTags: [], allowedAttributes: {} }),
+    paraThreeTitle: sanitizeHtml(paraThreeTitle || "", { allowedTags: [], allowedAttributes: {} }),
+    paraThreeDescription: sanitizeHtml(paraThreeDescription || "", { allowedTags: [], allowedAttributes: {} }),
     createdBy,
     authorAvatar,
     authorName,
@@ -231,7 +238,6 @@ export const blogPost = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
-
 export const deleteBlog = catchAsyncErrors(async (req, res, next) => {
   const { id } = req.params;
   const blog = await Blog.findById(id);
@@ -265,7 +271,7 @@ export const getSingleBlog = catchAsyncErrors(async (req, res, next) => {
   if (!blog.published && !isOwner) {
     return next(new ErrorHandler("Not authorized to view this draft blog", 403));
   }
-  
+
   res.status(200).json({
     success: true,
     blog,
@@ -288,15 +294,15 @@ export const updateBlog = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHandler("Blog not found!", 404));
   }
   const newBlogData = {
-    title: req.body.title,
-    intro: req.body.intro,
-    category: req.body.category,
-    paraOneTitle: req.body.paraOneTitle,
-    paraOneDescription: req.body.paraOneDescription,
-    paraTwoTitle: req.body.paraTwoTitle,
-    paraTwoDescription: req.body.paraTwoDescription,
-    paraThreeTitle: req.body.paraThreeTitle,
-    paraThreeDescription: req.body.paraThreeDescription,
+    title: sanitizeHtml(req.body.title, { allowedTags: [], allowedAttributes: {} }),
+    intro: sanitizeHtml(req.body.intro, { allowedTags: [], allowedAttributes: {} }),
+    category: sanitizeHtml(req.body.category, { allowedTags: [], allowedAttributes: {} }),
+    paraOneTitle: sanitizeHtml(req.body.paraOneTitle || "", { allowedTags: [], allowedAttributes: {} }),
+    paraOneDescription: sanitizeHtml(req.body.paraOneDescription || "", { allowedTags: [], allowedAttributes: {} }),
+    paraTwoTitle: sanitizeHtml(req.body.paraTwoTitle || "", { allowedTags: [], allowedAttributes: {} }),
+    paraTwoDescription: sanitizeHtml(req.body.paraTwoDescription || "", { allowedTags: [], allowedAttributes: {} }),
+    paraThreeTitle: sanitizeHtml(req.body.paraThreeTitle || "", { allowedTags: [], allowedAttributes: {} }),
+    paraThreeDescription: sanitizeHtml(req.body.paraThreeDescription || "", { allowedTags: [], allowedAttributes: {} }),
     published: req.body.published,
   };
   if (req.files) {
