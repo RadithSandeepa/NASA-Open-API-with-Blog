@@ -11,7 +11,9 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
-  const { mode, isAuthenticated, setUser, setIsAuthenticated } = useContext(Context);
+
+  const { mode, isAuthenticated, setIsAuthenticated, setUser } = useContext(Context);
+
   const navigateTo = useNavigate();
 
   const handleRegister = async (e) => {
@@ -20,20 +22,18 @@ const Register = () => {
     try {
       const { data } = await axios.post(
         `${API_BASE_URL}/api/v1/user/register`,
-        { name, email, phone, password },
+        formData,
         {
           withCredentials: true,
-          headers: { "Content-Type": "application/json" },
         }
       );
-
-      toast.success(data.message);
-      setUser(data.user);
-      setIsAuthenticated(true);
       setName("");
       setEmail("");
       setPhone("");
       setPassword("");
+      setUser(data.user);
+      setIsAuthenticated(true);
+      toast.success(data.message);
       navigateTo("/home");
     } catch (error) {
       const message =
