@@ -12,6 +12,16 @@ const getCookieOptions = () => {
   };
 };
 
+const sanitizeUser = (user) => {
+  if (!user) return user;
+  const rawUser =
+    typeof user.toObject === 'function' ? user.toObject() : { ...user };
+  const sanitizedUser = { ...rawUser };
+  delete sanitizedUser.password;
+  delete sanitizedUser.phone;
+  return sanitizedUser;
+};
+
 export const attachTokenCookie = (user, res) => {
   const token = user.getJWTToken();
   const options = getCookieOptions();
@@ -22,12 +32,13 @@ export const attachTokenCookie = (user, res) => {
 };
 
 export const sendToken = (user, statusCode, message, res) => {
-  const token = attachTokenCookie(user, res);
+  attachTokenCookie(user, res);
+
+  const sanitizedUser = sanitizeUser(user);
 
   res.status(statusCode).json({
     success: true,
-    user,
+    user: sanitizedUser,
     message,
-    token,
   });
 };
