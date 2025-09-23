@@ -18,6 +18,11 @@ const Register = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("email", email);
+    formData.append("phone", phone);
+    formData.append("password", password);
 
     try {
       const { data } = await axios.post(
@@ -36,6 +41,7 @@ const Register = () => {
       toast.success(data.message);
       navigateTo("/home");
     } catch (error) {
+      console.error("Registration error:", error);
       const message =
         error?.response?.data?.message || "Registration failed. Please try again.";
       toast.error(message);

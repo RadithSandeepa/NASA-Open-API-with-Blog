@@ -15,10 +15,14 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    const formData = new FormData();
+    formData.append("email", email);
+    formData.append("password", password);
+    
     try {
       const { data } = await axios.post(
         `${API_BASE_URL}/api/v1/user/login`,
-        { email, password, role },
+        formData,
         {
           withCredentials: true,
           headers: { "Content-Type": "application/json" },
