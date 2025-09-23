@@ -20,7 +20,7 @@ import OAuthCallback from "./components/pages/OAuthCallback";
 import { API_BASE_URL } from "./utils/constants";
 
 const App = () => {
-  const { setUser, isAuthenticated, setIsAuthenticated, user, setBlogs } =
+  const { setUser, isAuthenticated, setIsAuthenticated, setBlogs } =
     useContext(Context);
 
   useEffect(() => {
@@ -53,7 +53,7 @@ const App = () => {
 
     fetchUser();
     fetchBlogs();
-  }, [setUser, setIsAuthenticated, setBlogs, isAuthenticated, user]);
+  }, [setUser, setIsAuthenticated, setBlogs, isAuthenticated]);
 
   return (
     <>
