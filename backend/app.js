@@ -3,14 +3,26 @@ import dotenv from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import rateLimit from "express-rate-limit";
+import fileUpload from "express-fileupload";
 import { dbConnection } from "./database/dbConnection.js";
 import { errorMiddleware } from "./middlewares/error.js";
 import userRouter from "./routes/userRouter.js";
 import blogRouter from "./routes/blogRouter.js";
-import fileUpload from "express-fileupload";
+import authRouter from "./routes/authRouter.js";
+import passport from "./middlewares/passportConfig.js";
+
+dotenv.config({ path: "./.env" });
 
 const app = express();
-dotenv.config({ path: "./.env" });
+
+const defaultOrigins = [
+  "https://nasa-open-api-with-blog-frontend.vercel.app",
+  "http://localhost:5173",
+];
+
+const allowedOrigins = process.env.CLIENT_URL
+  ? process.env.CLIENT_URL.split(",").map((origin) => origin.trim())
+  : defaultOrigins;
 
 // Rate limiting for file uploads (more restrictive)
 const uploadLimiter = rateLimit({
@@ -44,11 +56,10 @@ app.use(
   })
 );
 
-// app.use(cors()); 
-
-// app.options('*', cors());
-
 app.use(cookieParser());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(passport.initialize());
 
 // Configure file upload middleware BEFORE other body parsers
 app.use(
@@ -88,6 +99,7 @@ app.use(
 app.use(express.json({ limit: '10mb' })); // Limit JSON payload size
 app.use(express.urlencoded({ extended: true, limit: '10mb' })); // Limit URL-encoded payload size
 
+app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/blog", uploadLimiter, blogRouter); // Apply stricter rate limiting to blog routes
 
@@ -96,3 +108,4 @@ dbConnection();
 app.use(errorMiddleware);
 
 export default app;
+
