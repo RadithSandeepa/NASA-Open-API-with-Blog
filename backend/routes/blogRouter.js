@@ -7,7 +7,7 @@ import {
   getSingleBlog,
   updateBlog,
 } from "../controllers/blogController.js";
-import { isAuthenticated, isAuthorized } from "../middlewares/auth.js";
+import { isAuthenticated, isAuthorized, isBlogOwner } from "../middlewares/auth.js";
 import { validateFileUpload } from "../middlewares/fileValidation.js";
 
 const router = express.Router();
@@ -17,12 +17,13 @@ router.post("/post", isAuthenticated, isAuthorized("Author"), validateFileUpload
 router.delete(
   "/delete/:id",
   isAuthenticated,
+  isBlogOwner,
   isAuthorized("Author"),
   deleteBlog
 );
 router.get("/all", getAllBlogs);
 router.get("/singleblog/:id", isAuthenticated, getSingleBlog);
 router.get("/myblogs", isAuthenticated, isAuthorized("Author"), getMyBlogs);
-router.put("/update/:id", isAuthenticated, isAuthorized("Author"), validateFileUpload, updateBlog);
+router.put("/update/:id", isAuthenticated, isBlogOwner, isAuthorized("Author"), validateFileUpload, updateBlog);
 
 export default router;
