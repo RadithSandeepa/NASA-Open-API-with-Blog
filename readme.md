@@ -31,7 +31,7 @@ The main objective was to identify vulnerabilities in an existing project, fix t
 
 ## Additional Deliverables  
 
-- **YouTube Video Link:** *(To be added after recording)*  
+- **YouTube Video Link:** https://youtu.be/KqVLZsskcKk  
 - **Report (PDF):** Included in submission zip  
 
 ---
