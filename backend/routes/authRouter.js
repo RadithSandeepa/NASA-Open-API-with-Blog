@@ -14,6 +14,7 @@ router.get(
     scope: ["profile", "email"],
     session: false,
     prompt: "select_account",
+    state: true,
   })
 );
 
@@ -31,6 +32,7 @@ router.get(
   passport.authenticate("github", {
     scope: ["user:email"],
     session: false,
+    state: true,
   })
 );
 
