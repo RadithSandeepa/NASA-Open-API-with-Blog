@@ -3,6 +3,7 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import { Context } from "../../main";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { validateEmail, validatePassword, sanitizeInput, validatePhone } from "../../utils/validators";
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -16,11 +17,33 @@ const Register = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    // Input validation
+    if (!name || sanitizeInput(name).length < 2) {
+      toast.error("Name must be at least 2 characters");
+      return;
+    }
+    if (!validateEmail(email)) {
+      toast.error("Invalid email format");
+      return;
+    }
+    if (!validatePhone(phone)) {
+      toast.error("Phone number must be 10-15 digits");
+      return;
+    }
+    if (!validatePassword(password)) {
+      toast.error("Password must be at least 8 characters, include a letter and a number");
+      return;
+    }
+    // Sanitize inputs
+    const safeName = sanitizeInput(name);
+    const safeEmail = sanitizeInput(email);
+    const safePhone = sanitizeInput(phone);
+    const safePassword = sanitizeInput(password);
     const formData = new FormData();
-    formData.append("name", name);
-    formData.append("email", email);
-    formData.append("phone", phone);
-    formData.append("password", password);
+    formData.append("name", safeName);
+    formData.append("email", safeEmail);
+    formData.append("phone", safePhone);
+    formData.append("password", safePassword);
 
     try {
       const { data } = await axios.post(

@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
 import { Context } from "../../main";
+import { sanitizeInput } from "../../utils/validators";
 
 const UpdateBlog = () => {
   const { id } = useParams();
@@ -57,19 +58,19 @@ const UpdateBlog = () => {
   const handleUpdate = async (e) => {
     e.preventDefault();
     const updatedBlog = new FormData();
-    updatedBlog.append("title", title);
-    updatedBlog.append("intro", intro);
-    updatedBlog.append("category", category);
+    updatedBlog.append("title", sanitizeInput(title));
+    updatedBlog.append("intro", sanitizeInput(intro));
+    updatedBlog.append("category", sanitizeInput(category));
     console.log(published);
     updatedBlog.append("published", published);
     updatedBlog.append("mainImage", mainImage);
     if (paraOneTitle && paraOneTitle.length !== 0) {
-      updatedBlog.append("paraOneTitle", paraOneTitle);
+      updatedBlog.append("paraOneTitle", sanitizeInput(paraOneTitle));
     } else {
       updatedBlog.append("paraOneTitle", "");
     }
     if (paraOneDescription && paraOneDescription.length !== 0) {
-      updatedBlog.append("paraOneDescription", paraOneDescription);
+      updatedBlog.append("paraOneDescription", sanitizeInput(paraOneDescription));
     } else {
       updatedBlog.append("paraOneDescription", "");
     }
@@ -77,12 +78,12 @@ const UpdateBlog = () => {
       updatedBlog.append("paraOneImage", paraOneImage);
     }
     if (paraTwoTitle && paraTwoTitle.length !== 0) {
-      updatedBlog.append("paraTwoTitle", paraTwoTitle);
+      updatedBlog.append("paraTwoTitle", sanitizeInput(paraTwoTitle));
     } else {
       updatedBlog.append("paraTwoTitle", "");
     }
     if (paraTwoDescription && paraTwoDescription.length !== 0) {
-      updatedBlog.append("paraTwoDescription", paraTwoDescription);
+      updatedBlog.append("paraTwoDescription", sanitizeInput(paraTwoDescription));
     } else {
       updatedBlog.append("paraTwoDescription", "");
     }
@@ -90,12 +91,12 @@ const UpdateBlog = () => {
       updatedBlog.append("paraTwoImage", paraTwoImage);
     }
     if (paraThreeTitle && paraThreeTitle.length !== 0) {
-      updatedBlog.append("paraThreeTitle", paraThreeTitle);
+      updatedBlog.append("paraThreeTitle", sanitizeInput(paraThreeTitle));
     } else {
       updatedBlog.append("paraThreeTitle", "");
     }
     if (paraThreeDescription && paraThreeDescription.length !== 0) {
-      updatedBlog.append("paraThreeDescription", paraThreeDescription);
+      updatedBlog.append("paraThreeDescription", sanitizeInput(paraThreeDescription));
     } else {
       updatedBlog.append("paraThreeDescription", "");
     }

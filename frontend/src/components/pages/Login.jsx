@@ -3,6 +3,7 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import { Context } from "../../main";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { validateEmail, validatePassword, sanitizeInput } from "../../utils/validators";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -13,10 +14,22 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    // Input validation
+    if (!validateEmail(email)) {
+      toast.error("Invalid email format");
+      return;
+    }
+    if (!validatePassword(password)) {
+      toast.error("Password must be at least 8 characters, include a letter and a number");
+      return;
+    }
+    // Sanitize inputs
+    const safeEmail = sanitizeInput(email);
+    const safePassword = sanitizeInput(password);
     try {
       const { data } = await axios.post(
         "http://localhost:4000/api/v1/user/login",
-        { email, password, role },
+        { email: safeEmail, password: safePassword, role },
         {
           withCredentials: true,
           headers: { "Content-Type": "application/json" },
